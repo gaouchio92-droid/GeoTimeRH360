@@ -162,6 +162,26 @@ class FraudSignal {
   final Color color;
 }
 
+class AttendanceEvent {
+  const AttendanceEvent({
+    required this.employee,
+    required this.method,
+    required this.site,
+    required this.time,
+    required this.decision,
+    required this.note,
+    required this.color,
+  });
+
+  final String employee;
+  final String method;
+  final String site;
+  final String time;
+  final String decision;
+  final String note;
+  final Color color;
+}
+
 class DemoData {
   static const employees = [
     Employee(
@@ -375,6 +395,36 @@ class DemoData {
       value: '98%',
       status: 'Valide',
       color: Colors.blue,
+    ),
+  ];
+
+  static const attendanceEvents = [
+    AttendanceEvent(
+      employee: 'Aminata Diallo',
+      method: 'Face + GPS',
+      site: 'Siege Kaloum',
+      time: '08:24',
+      decision: 'Valide',
+      note: 'Liveness confirme, geofence 38 m.',
+      color: Colors.green,
+    ),
+    AttendanceEvent(
+      employee: 'Mamadou Bah',
+      method: 'GPS',
+      site: 'Datacenter Kipe',
+      time: '08:58',
+      decision: 'Bloque',
+      note: 'Mock location detectee avant validation.',
+      color: Colors.red,
+    ),
+    AttendanceEvent(
+      employee: 'Fatou Camara',
+      method: 'Offline QR',
+      site: 'Mission Kindia',
+      time: '09:12',
+      decision: 'En file',
+      note: 'Reseau 2G, synchronisation automatique en attente.',
+      color: Colors.orange,
     ),
   ];
 

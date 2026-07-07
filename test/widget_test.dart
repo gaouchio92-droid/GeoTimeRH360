@@ -25,4 +25,21 @@ void main() {
     );
     expect(find.text('Anti-fraude pointage'), findsOneWidget);
   });
+
+  testWidgets('Attendance console validates a GPS check-in', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Pointage'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Console de validation'), findsOneWidget);
+    expect(find.text('Controle anti-fraude'), findsOneWidget);
+    expect(find.text('File offline Afrique'), findsOneWidget);
+
+    await tester.tap(find.text('Simuler validation'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Valide: GPS reel dans le geofence'), findsWidgets);
+  });
 }
