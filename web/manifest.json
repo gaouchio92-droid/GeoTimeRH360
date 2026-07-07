@@ -1,0 +1,12 @@
+{
+  "name": "GeoTime Enterprise HR Suite",
+  "short_name": "GeoTime",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F7F9FB",
+  "theme_color": "#0F8B8D",
+  "description": "Plateforme SaaS RH, pointage intelligent, paie et workforce management.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": []
+}

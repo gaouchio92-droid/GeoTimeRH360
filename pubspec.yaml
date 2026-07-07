@@ -1,0 +1,33 @@
+name: geotime_enterprise_hr_suite
+description: Prototype Flutter SaaS de gestion RH, pointage intelligent, paie et workforce management.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  intl: ^0.20.2
+  fl_chart: ^0.68.0
+  mobile_scanner: ^5.2.3
+  qr_flutter: ^4.1.0
+  sqflite: ^2.3.3+1
+  path_provider: ^2.1.4
+  shared_preferences: ^2.3.2
+  http: ^1.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
