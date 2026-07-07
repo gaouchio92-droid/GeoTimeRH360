@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 enum HrAlertType { fraud, late, absence, payroll, compliance }
 
+enum ApprovalPriority { normal, high, critical }
+
 class Employee {
   const Employee({
     required this.name,
@@ -104,6 +106,60 @@ class HrAlert {
       HrAlertType.compliance => Icons.verified_user_rounded,
     };
   }
+}
+
+class OrgUnit {
+  const OrgUnit({
+    required this.name,
+    required this.level,
+    required this.manager,
+    required this.headcount,
+    required this.presentRate,
+  });
+
+  final String name;
+  final String level;
+  final String manager;
+  final int headcount;
+  final double presentRate;
+}
+
+class ApprovalTask {
+  const ApprovalTask({
+    required this.title,
+    required this.owner,
+    required this.step,
+    required this.priority,
+    required this.dueLabel,
+  });
+
+  final String title;
+  final String owner;
+  final String step;
+  final ApprovalPriority priority;
+  final String dueLabel;
+
+  Color get color {
+    return switch (priority) {
+      ApprovalPriority.normal => Colors.blue,
+      ApprovalPriority.high => Colors.orange,
+      ApprovalPriority.critical => Colors.red,
+    };
+  }
+}
+
+class FraudSignal {
+  const FraudSignal({
+    required this.label,
+    required this.value,
+    required this.status,
+    required this.color,
+  });
+
+  final String label;
+  final String value;
+  final String status;
+  final Color color;
 }
 
 class DemoData {
@@ -237,6 +293,88 @@ class DemoData {
       title: 'Paie a valider',
       message: '3 lignes avec overtime nuit attendent Finance.',
       type: HrAlertType.payroll,
+    ),
+  ];
+
+  static const organization = [
+    OrgUnit(
+      name: 'Direction Generale',
+      level: 'Direction',
+      manager: 'M. Camara',
+      headcount: 24,
+      presentRate: 96,
+    ),
+    OrgUnit(
+      name: 'Ressources humaines',
+      level: 'Departement',
+      manager: 'Aminata Diallo',
+      headcount: 18,
+      presentRate: 94,
+    ),
+    OrgUnit(
+      name: 'IT & securite',
+      level: 'Service',
+      manager: 'Mamadou Bah',
+      headcount: 42,
+      presentRate: 86,
+    ),
+    OrgUnit(
+      name: 'Ventes entreprises',
+      level: 'Unite',
+      manager: 'Fatou Camara',
+      headcount: 63,
+      presentRate: 91,
+    ),
+  ];
+
+  static const approvals = [
+    ApprovalTask(
+      title: 'Overtime nuit - Datacenter Kipe',
+      owner: 'Finance',
+      step: 'Validation finale',
+      priority: ApprovalPriority.high,
+      dueLabel: 'Aujourd hui',
+    ),
+    ApprovalTask(
+      title: 'Mission Kindia - audit presence',
+      owner: 'Manager commercial',
+      step: 'Validation manager',
+      priority: ApprovalPriority.normal,
+      dueLabel: 'Demain',
+    ),
+    ApprovalTask(
+      title: 'Absence injustifiee - Surete',
+      owner: 'RH',
+      step: 'Decision disciplinaire',
+      priority: ApprovalPriority.critical,
+      dueLabel: 'Urgent',
+    ),
+  ];
+
+  static const fraudSignals = [
+    FraudSignal(
+      label: 'Fake GPS',
+      value: '1',
+      status: 'Bloque',
+      color: Colors.red,
+    ),
+    FraudSignal(
+      label: 'VPN',
+      value: '0',
+      status: 'OK',
+      color: Colors.green,
+    ),
+    FraudSignal(
+      label: 'Root/Jailbreak',
+      value: '0',
+      status: 'OK',
+      color: Colors.green,
+    ),
+    FraudSignal(
+      label: 'Liveness',
+      value: '98%',
+      status: 'Valide',
+      color: Colors.blue,
     ),
   ];
 

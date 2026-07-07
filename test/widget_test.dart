@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geotime_enterprise_hr_suite/main.dart';
 
@@ -8,5 +9,20 @@ void main() {
 
     expect(find.byType(GeoTimeApp), findsOneWidget);
     expect(find.text('Presents'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Organigramme dynamique'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Organigramme dynamique'), findsOneWidget);
+    expect(find.text('Workflow a valider'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Anti-fraude pointage'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Anti-fraude pointage'), findsOneWidget);
   });
 }
