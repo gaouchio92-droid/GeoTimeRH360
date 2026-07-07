@@ -1,5 +1,7 @@
 # GeoTime Enterprise HR Suite
 
+[![Flutter CI](https://github.com/gaouchio92-droid/GeoTimeRH360/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/gaouchio92-droid/GeoTimeRH360/actions/workflows/flutter-ci.yml)
+
 Prototype Flutter multiplateforme pour une plateforme SaaS RH cloud native: gestion des employes, pointage intelligent, geofencing, paie, missions, performance et IA RH.
 
 ## Modules inclus
