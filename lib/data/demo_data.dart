@@ -86,6 +86,44 @@ class PayrollLine {
   double get net => base + overtime + allowances - deductions;
 }
 
+class PayrollSummary {
+  const PayrollSummary({
+    required this.period,
+    required this.gross,
+    required this.overtime,
+    required this.allowances,
+    required this.deductions,
+    required this.net,
+    required this.employeeCount,
+    required this.pendingApprovals,
+  });
+
+  final String period;
+  final double gross;
+  final double overtime;
+  final double allowances;
+  final double deductions;
+  final double net;
+  final int employeeCount;
+  final int pendingApprovals;
+}
+
+class PayrollAnomaly {
+  const PayrollAnomaly({
+    required this.title,
+    required this.employee,
+    required this.message,
+    required this.severity,
+    required this.color,
+  });
+
+  final String title;
+  final String employee;
+  final String message;
+  final String severity;
+  final Color color;
+}
+
 class HrAlert {
   const HrAlert({
     required this.title,
@@ -296,6 +334,41 @@ class DemoData {
     PayrollLine(employee: 'Aminata Diallo', base: 9200000, overtime: 680000, allowances: 1200000, deductions: 180000),
     PayrollLine(employee: 'Mamadou Bah', base: 7800000, overtime: 1120000, allowances: 750000, deductions: 240000),
     PayrollLine(employee: 'Fatou Camara', base: 6500000, overtime: 240000, allowances: 1450000, deductions: 90000),
+  ];
+
+  static const payrollSummary = PayrollSummary(
+    period: 'Juillet 2026',
+    gross: 23500000,
+    overtime: 2040000,
+    allowances: 3400000,
+    deductions: 510000,
+    net: 28430000,
+    employeeCount: 244,
+    pendingApprovals: 3,
+  );
+
+  static const payrollAnomalies = [
+    PayrollAnomaly(
+      title: 'Overtime nuit eleve',
+      employee: 'Mamadou Bah',
+      message: '9 h supplementaires sur site sensible.',
+      severity: 'A valider',
+      color: Colors.orange,
+    ),
+    PayrollAnomaly(
+      title: 'Retenue absence',
+      employee: 'Ibrahima Conte',
+      message: 'Absence injustifiee a confirmer par RH.',
+      severity: 'Critique',
+      color: Colors.red,
+    ),
+    PayrollAnomaly(
+      title: 'Indemnite mission',
+      employee: 'Fatou Camara',
+      message: 'Mission Kindia liee a un ordre approuve.',
+      severity: 'OK',
+      color: Colors.green,
+    ),
   ];
 
   static const alerts = [

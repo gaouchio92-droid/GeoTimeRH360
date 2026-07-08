@@ -42,4 +42,32 @@ void main() {
 
     expect(find.text('Valide: GPS reel dans le geofence'), findsWidgets);
   });
+
+  testWidgets('Payroll module displays cycle and validates payroll', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Paie'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Paie integree'), findsOneWidget);
+    expect(find.text('Juillet 2026'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Anomalies paie IA'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Anomalies paie IA'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Valider le cycle'),
+      -500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Valider le cycle'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Cycle paie valide'), findsOneWidget);
+  });
 }
