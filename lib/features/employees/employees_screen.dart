@@ -26,6 +26,15 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
             label: const Text('Ajouter'),
           ),
         ),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.storage_rounded),
+            title: Text('${_employees.length} employes de simulation'),
+            subtitle: const Text('Base generee avec noms guineens, matricules, sites, statuts et salaires.'),
+            trailing: const StatusChip(label: 'Seed RH', color: Colors.teal),
+          ),
+        ),
+        const SizedBox(height: 16),
         Wrap(
           spacing: 10,
           runSpacing: 10,

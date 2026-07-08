@@ -8,3 +8,19 @@ services:
       - "8088:80"
     restart: unless-stopped
 
+  geotime-db:
+    image: postgres:16-alpine
+    container_name: geotime-rh360-db
+    environment:
+      POSTGRES_DB: geotime_rh360
+      POSTGRES_USER: geotime
+      POSTGRES_PASSWORD: geotime_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - geotime-postgres-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+
+volumes:
+  geotime-postgres-data:

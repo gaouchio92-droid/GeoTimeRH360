@@ -243,60 +243,7 @@ class WorkforcePlan {
 }
 
 class DemoData {
-  static const employees = [
-    Employee(
-      name: 'Aminata Diallo',
-      employeeId: 'GT-EMP-0001',
-      role: 'Responsable paie',
-      department: 'Ressources humaines',
-      site: 'Siege Kaloum',
-      phone: '+224 620 11 22 33',
-      email: 'aminata.diallo@demo.gn',
-      status: 'Presente',
-      lateMinutes: 0,
-      overtimeHours: 4.5,
-      baseSalary: 9200000,
-    ),
-    Employee(
-      name: 'Mamadou Bah',
-      employeeId: 'GT-EMP-0002',
-      role: 'Technicien datacenter',
-      department: 'IT & securite',
-      site: 'Datacenter Kipe',
-      phone: '+224 624 55 44 22',
-      email: 'mamadou.bah@demo.gn',
-      status: 'Retard',
-      lateMinutes: 28,
-      overtimeHours: 9,
-      baseSalary: 7800000,
-    ),
-    Employee(
-      name: 'Fatou Camara',
-      employeeId: 'GT-EMP-0003',
-      role: 'Chargee commerciale',
-      department: 'Ventes entreprises',
-      site: 'Agence Ratoma',
-      phone: '+224 622 77 88 99',
-      email: 'fatou.camara@demo.gn',
-      status: 'Mission',
-      lateMinutes: 0,
-      overtimeHours: 2,
-      baseSalary: 6500000,
-    ),
-    Employee(
-      name: 'Ibrahima Conte',
-      employeeId: 'GT-EMP-0004',
-      role: 'Agent controle acces',
-      department: 'Surete',
-      site: 'Hopital Donka',
-      phone: '+224 628 70 70 10',
-      email: 'ibrahima.conte@demo.gn',
-      status: 'Absent',
-      lateMinutes: 0,
-      overtimeHours: 0,
-      baseSalary: 5100000,
-    ),
-  ];
+  static final employees = _buildEmployees();
 
   static const sites = [
     WorkSite(
@@ -365,7 +312,7 @@ class DemoData {
     allowances: 3400000,
     deductions: 510000,
     net: 28430000,
-    employeeCount: 244,
+    employeeCount: 100,
     pendingApprovals: 3,
   );
 
@@ -554,4 +501,112 @@ class DemoData {
   ];
 
   static const attendanceTrend = [82.0, 88.0, 91.0, 86.0, 94.0, 89.0, 96.0];
+
+  static List<Employee> _buildEmployees() {
+    const firstNames = [
+      'Aminata',
+      'Mamadou',
+      'Fatou',
+      'Ibrahima',
+      'Mariama',
+      'Alpha',
+      'Ousmane',
+      'Aissatou',
+      'Abdoulaye',
+      'Nene',
+      'Moussa',
+      'Hadja',
+      'Sekou',
+      'Kadiatou',
+      'Boubacar',
+      'Maimouna',
+      'Thierno',
+      'Ramatoulaye',
+      'Amadou',
+      'Fanta',
+    ];
+    const lastNames = [
+      'Diallo',
+      'Bah',
+      'Camara',
+      'Conte',
+      'Barry',
+      'Sow',
+      'Toure',
+      'Keita',
+      'Cisse',
+      'Kourouma',
+      'Sylla',
+      'Fofana',
+      'Kaba',
+      'Bangoura',
+      'Traore',
+      'Doumbouya',
+      'Cherif',
+      'Soumah',
+      'Camara',
+      'Diallo',
+    ];
+    const roles = [
+      'Responsable paie',
+      'Technicien datacenter',
+      'Charge commercial',
+      'Agent controle acces',
+      'Assistant RH',
+      'Manager agence',
+      'Comptable paie',
+      'Analyste performance',
+      'Agent terrain',
+      'Superviseur shift',
+    ];
+    const departments = [
+      'Ressources humaines',
+      'IT & securite',
+      'Ventes entreprises',
+      'Surete',
+      'Finance',
+      'Operations',
+      'Formation',
+      'Direction Generale',
+    ];
+    const sites = [
+      'Siege Kaloum',
+      'Datacenter Kipe',
+      'Agence Ratoma',
+      'Hopital Donka',
+      'Antenne Kindia',
+      'Bureau Boke',
+    ];
+    const statuses = ['Presente', 'Presente', 'Presente', 'Retard', 'Mission', 'Absent'];
+
+    return List<Employee>.generate(100, (index) {
+      final firstName = firstNames[index % firstNames.length];
+      final lastName = lastNames[(index * 7) % lastNames.length];
+      final role = roles[(index * 3) % roles.length];
+      final department = departments[(index * 5) % departments.length];
+      final site = sites[(index * 2) % sites.length];
+      final status = statuses[(index * 4) % statuses.length];
+      final lateMinutes = status == 'Retard' ? 5 + (index % 45) : 0;
+      final overtimeHours = (index % 6) * 1.5;
+      final salary = 4500000 + ((index % 12) * 450000);
+      final matricule = (index + 1).toString().padLeft(4, '0');
+      final phoneSuffix = (620000000 + (index * 13791)).toString();
+      final emailFirst = firstName.toLowerCase();
+      final emailLast = lastName.toLowerCase();
+
+      return Employee(
+        name: '$firstName $lastName',
+        employeeId: 'GT-EMP-$matricule',
+        role: role,
+        department: department,
+        site: site,
+        phone: '+224 $phoneSuffix',
+        email: '$emailFirst.$emailLast$matricule@geotime.gn',
+        status: status,
+        lateMinutes: lateMinutes,
+        overtimeHours: overtimeHours,
+        baseSalary: salary.toDouble(),
+      );
+    });
+  }
 }

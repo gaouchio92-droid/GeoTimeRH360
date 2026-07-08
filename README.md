@@ -48,6 +48,18 @@ Ouvrir ensuite :
 http://localhost:8088
 ```
 
+Base PostgreSQL locale de simulation :
+
+```text
+Host: localhost
+Port: 5433
+Database: geotime_rh360
+User: geotime
+Password: geotime_dev
+```
+
+Elle est initialisee avec un schema RH complet et 100 employes de simulation aux noms guineens.
+
 Arrêter le conteneur :
 
 ```powershell

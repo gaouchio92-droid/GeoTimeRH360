@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
           spacing: 12,
           runSpacing: 12,
           children: [
-            SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('present'), value: '244', subtitle: '92% des effectifs actifs', icon: Icons.groups_rounded, color: scheme.primary)),
+            SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('present'), value: '82', subtitle: '82% des 100 employes', icon: Icons.groups_rounded, color: scheme.primary)),
             SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('late'), value: '18', subtitle: '6 critiques a traiter', icon: Icons.schedule_rounded, color: Colors.orange)),
             SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('absent'), value: '12', subtitle: '4 absences injustifiees', icon: Icons.person_off_rounded, color: Colors.red)),
             SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('netPayroll'), value: '27,4M GNF', subtitle: 'Cycle mai pret a valider', icon: Icons.payments_rounded, color: Colors.green)),
