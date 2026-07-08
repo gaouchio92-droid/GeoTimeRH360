@@ -19,7 +19,7 @@ class AppStrings {
   static const _values = <String, Map<String, String>>{
     'fr': {
       'dashboard': 'Tableau',
-      'products': 'Employes',
+      'products': 'Employes RH',
       'stock': 'Pointage',
       'warehouses': 'Sites',
       'pos': 'Paie',
