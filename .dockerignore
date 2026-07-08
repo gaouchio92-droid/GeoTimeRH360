@@ -1,0 +1,6 @@
+.dart_tool/
+.git/
+.github/
+build/**/.last_build_id
+flutter_*.log
+server-*.log

@@ -1,0 +1,10 @@
+services:
+  geotime-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geotime-rh360-web
+    ports:
+      - "8088:80"
+    restart: unless-stopped
+

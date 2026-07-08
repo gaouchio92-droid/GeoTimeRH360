@@ -33,6 +33,27 @@ flutter pub get
 flutter run
 ```
 
+## Lancement local avec Docker Windows
+
+Construire le web Flutter puis lancer NGINX dans Docker :
+
+```powershell
+flutter build web --release
+docker compose up -d --build
+```
+
+Ouvrir ensuite :
+
+```text
+http://localhost:8088
+```
+
+Arrêter le conteneur :
+
+```powershell
+docker compose down
+```
+
 ## Verification
 
 ```powershell
