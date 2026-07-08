@@ -220,6 +220,28 @@ class AttendanceEvent {
   final Color color;
 }
 
+class WorkforcePlan {
+  const WorkforcePlan({
+    required this.site,
+    required this.shift,
+    required this.required,
+    required this.scheduled,
+    required this.costImpact,
+    required this.risk,
+    required this.color,
+  });
+
+  final String site;
+  final String shift;
+  final int required;
+  final int scheduled;
+  final double costImpact;
+  final String risk;
+  final Color color;
+
+  int get gap => scheduled - required;
+}
+
 class DemoData {
   static const employees = [
     Employee(
@@ -497,6 +519,36 @@ class DemoData {
       time: '09:12',
       decision: 'En file',
       note: 'Reseau 2G, synchronisation automatique en attente.',
+      color: Colors.orange,
+    ),
+  ];
+
+  static const workforcePlan = [
+    WorkforcePlan(
+      site: 'Siege Kaloum',
+      shift: 'Jour 08:30-18:00',
+      required: 210,
+      scheduled: 218,
+      costImpact: 1800000,
+      risk: 'Couverture OK',
+      color: Colors.green,
+    ),
+    WorkforcePlan(
+      site: 'Datacenter Kipe',
+      shift: 'Nuit 18:00-06:00',
+      required: 24,
+      scheduled: 19,
+      costImpact: 3200000,
+      risk: 'Sous-effectif',
+      color: Colors.red,
+    ),
+    WorkforcePlan(
+      site: 'Agence Ratoma',
+      shift: 'Pic service 10:00-15:00',
+      required: 58,
+      scheduled: 51,
+      costImpact: 950000,
+      risk: 'Renfort requis',
       color: Colors.orange,
     ),
   ];

@@ -78,6 +78,8 @@ class DashboardScreen extends StatelessWidget {
         const SizedBox(height: 24),
         _FraudSignalsPanel(scheme: scheme),
         const SizedBox(height: 24),
+        _WorkforcePlanningPanel(scheme: scheme),
+        const SizedBox(height: 24),
         SectionHeader(title: strings.t('alerts')),
         ...DemoData.alerts.map((alert) {
           return Padding(
@@ -101,6 +103,111 @@ class DashboardScreen extends StatelessWidget {
     if (width >= 1100) return (width - 132) / 4;
     if (width >= 700) return (width - 92) / 2;
     return width - 32;
+  }
+}
+
+class _WorkforcePlanningPanel extends StatelessWidget {
+  const _WorkforcePlanningPanel({required this.scheme});
+
+  final ColorScheme scheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SectionHeader(
+          title: 'Planification workforce',
+          action: TextButton.icon(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Simulation de planning lancee')),
+              );
+            },
+            icon: const Icon(Icons.auto_graph_rounded),
+            label: const Text('Simuler'),
+          ),
+        ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.groups_3_rounded, color: scheme.primary),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Couverture previsionnelle par site',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                    const StatusChip(label: 'IA planning', color: Colors.indigo),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                for (final item in DemoData.workforcePlan)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _WorkforcePlanTile(item: item),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _WorkforcePlanTile extends StatelessWidget {
+  const _WorkforcePlanTile({required this.item});
+
+  final WorkforcePlan item;
+
+  @override
+  Widget build(BuildContext context) {
+    final coverage = item.scheduled / item.required;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item.site, style: const TextStyle(fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 2),
+                  Text(item.shift),
+                ],
+              ),
+            ),
+            StatusChip(label: item.risk, color: item.color),
+          ],
+        ),
+        const SizedBox(height: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: LinearProgressIndicator(
+            value: coverage.clamp(0, 1.2) / 1.2,
+            minHeight: 10,
+            color: item.color,
+            backgroundColor: item.color.withValues(alpha: 0.12),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(child: Text('${item.scheduled}/${item.required} planifies')),
+            Text('Ecart ${item.gap >= 0 ? '+' : ''}${item.gap}'),
+            const SizedBox(width: 16),
+            Text(_money(item.costImpact)),
+          ],
+        ),
+      ],
+    );
   }
 }
 
@@ -385,4 +492,10 @@ class _FraudSignalCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _money(double value) {
+  final millions = value / 1000000;
+  if (millions >= 1) return '${millions.toStringAsFixed(1)}M GNF'.replaceAll('.', ',');
+  return '${value.toStringAsFixed(0)} GNF';
 }

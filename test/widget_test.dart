@@ -24,6 +24,13 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('Anti-fraude pointage'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Planification workforce'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Planification workforce'), findsOneWidget);
   });
 
   testWidgets('Attendance console validates a GPS check-in', (tester) async {
