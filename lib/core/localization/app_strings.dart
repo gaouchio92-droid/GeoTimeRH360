@@ -26,6 +26,7 @@ class AppStrings {
       'customers': 'Missions',
       'suppliers': 'Performance',
       'ai': 'IA RH',
+      'tenants': 'Tenants',
       'settings': 'Reglages',
       'search': 'Rechercher',
       'present': 'Presents',
@@ -47,6 +48,7 @@ class AppStrings {
       'customers': 'Missions',
       'suppliers': 'Performance',
       'ai': 'HR AI',
+      'tenants': 'Tenants',
       'settings': 'Settings',
       'search': 'Search',
       'present': 'Present',
@@ -68,6 +70,7 @@ class AppStrings {
       'customers': 'Missions',
       'suppliers': 'Performance',
       'ai': 'HR AI',
+      'tenants': 'Tenants',
       'settings': 'Settings',
       'search': 'Search',
       'present': 'Present',
@@ -89,6 +92,7 @@ class AppStrings {
       'customers': 'Misiones',
       'suppliers': 'Rendimiento',
       'ai': 'IA RRHH',
+      'tenants': 'Tenants',
       'settings': 'Ajustes',
       'search': 'Buscar',
       'present': 'Presentes',
@@ -103,7 +107,8 @@ class AppStrings {
     },
   };
 
-  String t(String key) => _values[locale.languageCode]?[key] ?? _values['fr']![key] ?? key;
+  String t(String key) =>
+      _values[locale.languageCode]?[key] ?? _values['fr']![key] ?? key;
 }
 
 class AppStringsDelegate extends LocalizationsDelegate<AppStrings> {
@@ -111,7 +116,8 @@ class AppStringsDelegate extends LocalizationsDelegate<AppStrings> {
 
   @override
   bool isSupported(Locale locale) {
-    return AppStrings.supportedLocales.any((item) => item.languageCode == locale.languageCode);
+    return AppStrings.supportedLocales
+        .any((item) => item.languageCode == locale.languageCode);
   }
 
   @override

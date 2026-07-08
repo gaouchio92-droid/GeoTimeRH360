@@ -11,6 +11,18 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
     final scheme = Theme.of(context).colorScheme;
+    final employeeCount = DemoData.employees.length;
+    final presentCount = DemoData.employees
+        .where((employee) => employee.status == 'Presente')
+        .length;
+    final lateCount = DemoData.employees
+        .where((employee) => employee.status == 'Retard')
+        .length;
+    final absentCount = DemoData.employees
+        .where((employee) => employee.status == 'Absent')
+        .length;
+    final presentRate =
+        employeeCount == 0 ? 0 : (presentCount / employeeCount * 100).round();
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -18,12 +30,42 @@ class DashboardScreen extends StatelessWidget {
           spacing: 12,
           runSpacing: 12,
           children: [
-            SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('present'), value: '82', subtitle: '82% des 100 employes', icon: Icons.groups_rounded, color: scheme.primary)),
-            SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('late'), value: '18', subtitle: '6 critiques a traiter', icon: Icons.schedule_rounded, color: Colors.orange)),
-            SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('absent'), value: '12', subtitle: '4 absences injustifiees', icon: Icons.person_off_rounded, color: Colors.red)),
-            SizedBox(width: _cardWidth(context), child: MetricCard(title: strings.t('netPayroll'), value: '27,4M GNF', subtitle: 'Cycle mai pret a valider', icon: Icons.payments_rounded, color: Colors.green)),
+            SizedBox(
+                width: _cardWidth(context),
+                child: MetricCard(
+                    title: strings.t('present'),
+                    value: '$presentCount',
+                    subtitle: '$presentRate% des $employeeCount employes',
+                    icon: Icons.groups_rounded,
+                    color: scheme.primary)),
+            SizedBox(
+                width: _cardWidth(context),
+                child: MetricCard(
+                    title: strings.t('late'),
+                    value: '$lateCount',
+                    subtitle: '${lateCount ~/ 2} critiques a traiter',
+                    icon: Icons.schedule_rounded,
+                    color: Colors.orange)),
+            SizedBox(
+                width: _cardWidth(context),
+                child: MetricCard(
+                    title: strings.t('absent'),
+                    value: '$absentCount',
+                    subtitle: '${absentCount ~/ 2} absences injustifiees',
+                    icon: Icons.person_off_rounded,
+                    color: Colors.red)),
+            SizedBox(
+                width: _cardWidth(context),
+                child: MetricCard(
+                    title: strings.t('netPayroll'),
+                    value: '27,4M GNF',
+                    subtitle: 'Cycle mai pret a valider',
+                    icon: Icons.payments_rounded,
+                    color: Colors.green)),
           ],
         ),
+        const SizedBox(height: 24),
+        _SaaSOverviewPanel(scheme: scheme),
         const SizedBox(height: 24),
         SectionHeader(title: strings.t('bestSellers')),
         Card(
@@ -140,10 +182,14 @@ class _WorkforcePlanningPanel extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Couverture previsionnelle par site',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w800),
                       ),
                     ),
-                    const StatusChip(label: 'IA planning', color: Colors.indigo),
+                    const StatusChip(
+                        label: 'IA planning', color: Colors.indigo),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -158,6 +204,125 @@ class _WorkforcePlanningPanel extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _SaaSOverviewPanel extends StatelessWidget {
+  const _SaaSOverviewPanel({required this.scheme});
+
+  final ColorScheme scheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SectionHeader(title: 'Pilotage SaaS multi-tenant'),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    _SaaSKpi(
+                      icon: Icons.apartment_rounded,
+                      label: 'Tenants',
+                      value:
+                          '${DemoData.activeTenantCount}/${DemoData.tenantAccounts.length}',
+                      color: scheme.primary,
+                    ),
+                    _SaaSKpi(
+                      icon: Icons.groups_rounded,
+                      label: 'Employes heberges',
+                      value: '${DemoData.totalTenantEmployees}',
+                      color: Colors.teal,
+                    ),
+                    _SaaSKpi(
+                      icon: Icons.payments_rounded,
+                      label: 'MRR',
+                      value: _money(DemoData.monthlyRecurringRevenue),
+                      color: Colors.green,
+                    ),
+                    const _SaaSKpi(
+                      icon: Icons.shield_rounded,
+                      label: 'Isolation',
+                      value: 'tenant_id',
+                      color: Colors.indigo,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    StatusChip(label: 'RBAC par tenant', color: Colors.indigo),
+                    StatusChip(label: 'RLS PostgreSQL', color: Colors.green),
+                    StatusChip(label: 'Audit logs', color: Colors.orange),
+                    StatusChip(label: 'API publique', color: Colors.blue),
+                    StatusChip(label: 'SSO / MFA', color: Colors.teal),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SaaSKpi extends StatelessWidget {
+  const _SaaSKpi({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: _width(context),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.18)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: color),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: Theme.of(context).textTheme.labelMedium),
+                Text(value,
+                    style: const TextStyle(fontWeight: FontWeight.w900)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  double _width(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    if (width >= 1100) return (width - 180) / 4;
+    if (width >= 700) return (width - 92) / 2;
+    return width - 64;
   }
 }
 
@@ -178,7 +343,8 @@ class _WorkforcePlanTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item.site, style: const TextStyle(fontWeight: FontWeight.w800)),
+                  Text(item.site,
+                      style: const TextStyle(fontWeight: FontWeight.w800)),
                   const SizedBox(height: 2),
                   Text(item.shift),
                 ],
@@ -200,7 +366,8 @@ class _WorkforcePlanTile extends StatelessWidget {
         const SizedBox(height: 8),
         Row(
           children: [
-            Expanded(child: Text('${item.scheduled}/${item.required} planifies')),
+            Expanded(
+                child: Text('${item.scheduled}/${item.required} planifies')),
             Text('Ecart ${item.gap >= 0 ? '+' : ''}${item.gap}'),
             const SizedBox(width: 16),
             Text(_money(item.costImpact)),
@@ -260,7 +427,9 @@ class _OrganizationPanel extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                for (var index = 0; index < DemoData.organization.length; index++) ...[
+                for (var index = 0;
+                    index < DemoData.organization.length;
+                    index++) ...[
                   _OrgUnitTile(
                     unit: DemoData.organization[index],
                     color: _orgColor(index),
@@ -268,7 +437,8 @@ class _OrganizationPanel extends StatelessWidget {
                   if (index < DemoData.organization.length - 1)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Icon(Icons.keyboard_arrow_down_rounded, color: scheme.outline),
+                      child: Icon(Icons.keyboard_arrow_down_rounded,
+                          color: scheme.outline),
                     ),
                 ],
               ],
@@ -322,7 +492,8 @@ class _OrgUnitTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(unit.name, style: const TextStyle(fontWeight: FontWeight.w800)),
+                Text(unit.name,
+                    style: const TextStyle(fontWeight: FontWeight.w800)),
                 const SizedBox(height: 2),
                 Text('${unit.level} - ${unit.manager}'),
               ],
@@ -331,7 +502,8 @@ class _OrgUnitTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('${unit.headcount}', style: const TextStyle(fontWeight: FontWeight.w800)),
+              Text('${unit.headcount}',
+                  style: const TextStyle(fontWeight: FontWeight.w800)),
               Text('${unit.presentRate.toStringAsFixed(0)}%'),
             ],
           ),
@@ -402,7 +574,8 @@ class _ApprovalTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(task.title, style: const TextStyle(fontWeight: FontWeight.w800)),
+              Text(task.title,
+                  style: const TextStyle(fontWeight: FontWeight.w800)),
               const SizedBox(height: 2),
               Text('${task.step} - ${task.owner}'),
             ],
@@ -476,7 +649,8 @@ class _FraudSignalCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(signal.label, style: const TextStyle(fontWeight: FontWeight.w800)),
+                Text(signal.label,
+                    style: const TextStyle(fontWeight: FontWeight.w800)),
                 Text(signal.status),
               ],
             ),
@@ -496,6 +670,8 @@ class _FraudSignalCard extends StatelessWidget {
 
 String _money(double value) {
   final millions = value / 1000000;
-  if (millions >= 1) return '${millions.toStringAsFixed(1)}M GNF'.replaceAll('.', ',');
+  if (millions >= 1) {
+    return '${millions.toStringAsFixed(1)}M GNF'.replaceAll('.', ',');
+  }
   return '${value.toStringAsFixed(0)} GNF';
 }

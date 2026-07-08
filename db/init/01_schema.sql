@@ -3,8 +3,15 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE IF NOT EXISTS tenants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
+  sector TEXT NOT NULL DEFAULT 'Entreprise',
+  plan TEXT NOT NULL DEFAULT 'Business',
+  status TEXT NOT NULL DEFAULT 'Actif',
   country TEXT NOT NULL DEFAULT 'Guinee',
   currency TEXT NOT NULL DEFAULT 'GNF',
+  data_region TEXT NOT NULL DEFAULT 'Afrique Ouest',
+  employee_limit INTEGER NOT NULL DEFAULT 500,
+  sso_enabled BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

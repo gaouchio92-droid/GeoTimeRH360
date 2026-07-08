@@ -186,6 +186,60 @@ class ApprovalTask {
   }
 }
 
+class TenantAccount {
+  const TenantAccount({
+    required this.name,
+    required this.slug,
+    required this.sector,
+    required this.country,
+    required this.currency,
+    required this.plan,
+    required this.status,
+    required this.dataRegion,
+    required this.employeeCount,
+    required this.userCount,
+    required this.siteCount,
+    required this.monthlyRevenue,
+    required this.storageGb,
+    required this.modules,
+    required this.ssoEnabled,
+    required this.auditScore,
+  });
+
+  final String name;
+  final String slug;
+  final String sector;
+  final String country;
+  final String currency;
+  final String plan;
+  final String status;
+  final String dataRegion;
+  final int employeeCount;
+  final int userCount;
+  final int siteCount;
+  final double monthlyRevenue;
+  final double storageGb;
+  final List<String> modules;
+  final bool ssoEnabled;
+  final int auditScore;
+}
+
+class SaaSControl {
+  const SaaSControl({
+    required this.title,
+    required this.value,
+    required this.description,
+    required this.icon,
+    required this.color,
+  });
+
+  final String title;
+  final String value;
+  final String description;
+  final IconData icon;
+  final Color color;
+}
+
 class FraudSignal {
   const FraudSignal({
     required this.label,
@@ -245,6 +299,126 @@ class WorkforcePlan {
 class DemoData {
   static final employees = _buildEmployees();
 
+  static const tenantAccounts = [
+    TenantAccount(
+      name: 'GeoTime Demo Guinee',
+      slug: 'geotime-demo-gn',
+      sector: 'Entreprise privee',
+      country: 'Guinee',
+      currency: 'GNF',
+      plan: 'Enterprise',
+      status: 'Actif',
+      dataRegion: 'Afrique Ouest',
+      employeeCount: 100,
+      userCount: 18,
+      siteCount: 6,
+      monthlyRevenue: 14500000,
+      storageGb: 18.4,
+      modules: ['RH Core', 'Pointage IA', 'Paie', 'Missions', 'Performance'],
+      ssoEnabled: true,
+      auditScore: 96,
+    ),
+    TenantAccount(
+      name: 'Ministere Sante GN',
+      slug: 'ministere-sante-gn',
+      sector: 'Administration publique',
+      country: 'Guinee',
+      currency: 'GNF',
+      plan: 'Government',
+      status: 'Onboarding',
+      dataRegion: 'Afrique Ouest',
+      employeeCount: 1240,
+      userCount: 64,
+      siteCount: 38,
+      monthlyRevenue: 42000000,
+      storageGb: 82.7,
+      modules: ['RH Core', 'Pointage IA', 'Controle acces', 'Formations'],
+      ssoEnabled: true,
+      auditScore: 89,
+    ),
+    TenantAccount(
+      name: 'Banque Atlantique Conakry',
+      slug: 'banque-atlantique-ckry',
+      sector: 'Banque',
+      country: 'Guinee',
+      currency: 'GNF',
+      plan: 'Enterprise Plus',
+      status: 'Actif',
+      dataRegion: 'Afrique Ouest',
+      employeeCount: 620,
+      userCount: 42,
+      siteCount: 22,
+      monthlyRevenue: 36500000,
+      storageGb: 44.2,
+      modules: ['RH Core', 'Pointage IA', 'Paie', 'SSO', 'SIEM'],
+      ssoEnabled: true,
+      auditScore: 98,
+    ),
+    TenantAccount(
+      name: 'Industries Boke Services',
+      slug: 'industries-boke-services',
+      sector: 'Industrie',
+      country: 'Guinee',
+      currency: 'GNF',
+      plan: 'Business',
+      status: 'Essai',
+      dataRegion: 'Afrique Ouest',
+      employeeCount: 280,
+      userCount: 12,
+      siteCount: 9,
+      monthlyRevenue: 9800000,
+      storageGb: 12.1,
+      modules: ['RH Core', 'Pointage GPS', 'Missions'],
+      ssoEnabled: false,
+      auditScore: 78,
+    ),
+  ];
+
+  static const saasControls = [
+    SaaSControl(
+      title: 'Isolation donnees',
+      value: 'RLS pret',
+      description: 'Chaque requete est portee par tenant_id.',
+      icon: Icons.dataset_linked_rounded,
+      color: Colors.indigo,
+    ),
+    SaaSControl(
+      title: 'Authentification',
+      value: 'SSO/MFA',
+      description: 'RBAC par tenant, roles RH, manager, finance.',
+      icon: Icons.admin_panel_settings_rounded,
+      color: Colors.green,
+    ),
+    SaaSControl(
+      title: 'Observabilite',
+      value: 'Audit logs',
+      description: 'Traces paie, pointage, exports et acces sensibles.',
+      icon: Icons.manage_search_rounded,
+      color: Colors.orange,
+    ),
+    SaaSControl(
+      title: 'Regions data',
+      value: 'Multi-pays',
+      description: 'GNF, XOF, USD, FR/EN/AR et reseaux faibles.',
+      icon: Icons.public_rounded,
+      color: Colors.teal,
+    ),
+  ];
+
+  static int get activeTenantCount {
+    return tenantAccounts.where((tenant) => tenant.status == 'Actif').length;
+  }
+
+  static int get totalTenantEmployees {
+    return tenantAccounts.fold(
+        0, (total, tenant) => total + tenant.employeeCount);
+  }
+
+  static double get monthlyRecurringRevenue {
+    return tenantAccounts.fold(
+        0, (total, tenant) => total + tenant.monthlyRevenue);
+  }
+
   static const sites = [
     WorkSite(
       name: 'Siege Kaloum',
@@ -300,9 +474,24 @@ class DemoData {
   ];
 
   static const payroll = [
-    PayrollLine(employee: 'Aminata Diallo', base: 9200000, overtime: 680000, allowances: 1200000, deductions: 180000),
-    PayrollLine(employee: 'Mamadou Bah', base: 7800000, overtime: 1120000, allowances: 750000, deductions: 240000),
-    PayrollLine(employee: 'Fatou Camara', base: 6500000, overtime: 240000, allowances: 1450000, deductions: 90000),
+    PayrollLine(
+        employee: 'Aminata Diallo',
+        base: 9200000,
+        overtime: 680000,
+        allowances: 1200000,
+        deductions: 180000),
+    PayrollLine(
+        employee: 'Mamadou Bah',
+        base: 7800000,
+        overtime: 1120000,
+        allowances: 750000,
+        deductions: 240000),
+    PayrollLine(
+        employee: 'Fatou Camara',
+        base: 6500000,
+        overtime: 240000,
+        allowances: 1450000,
+        deductions: 90000),
   ];
 
   static const payrollSummary = PayrollSummary(
@@ -577,7 +766,14 @@ class DemoData {
       'Antenne Kindia',
       'Bureau Boke',
     ];
-    const statuses = ['Presente', 'Presente', 'Presente', 'Retard', 'Mission', 'Absent'];
+    const statuses = [
+      'Presente',
+      'Presente',
+      'Presente',
+      'Retard',
+      'Mission',
+      'Absent'
+    ];
 
     return List<Employee>.generate(100, (index) {
       final firstName = firstNames[index % firstNames.length];
@@ -585,7 +781,7 @@ class DemoData {
       final role = roles[(index * 3) % roles.length];
       final department = departments[(index * 5) % departments.length];
       final site = sites[(index * 2) % sites.length];
-      final status = statuses[(index * 4) % statuses.length];
+      final status = statuses[(index * 5) % statuses.length];
       final lateMinutes = status == 'Retard' ? 5 + (index % 45) : 0;
       final overtimeHours = (index % 6) * 1.5;
       final salary = 4500000 + ((index % 12) * 450000);

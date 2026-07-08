@@ -2,9 +2,15 @@ DO $$
 DECLARE
   tenant_uuid UUID;
 BEGIN
-  INSERT INTO tenants (name, country, currency)
-  VALUES ('GeoTime Demo Guinee', 'Guinee', 'GNF')
+  INSERT INTO tenants (name, slug, sector, plan, status, country, currency, data_region, employee_limit, sso_enabled)
+  VALUES ('GeoTime Demo Guinee', 'geotime-demo-gn', 'Entreprise privee', 'Enterprise', 'Actif', 'Guinee', 'GNF', 'Afrique Ouest', 1000, true)
   RETURNING id INTO tenant_uuid;
+
+  INSERT INTO tenants (name, slug, sector, plan, status, country, currency, data_region, employee_limit, sso_enabled)
+  VALUES
+    ('Ministere Sante GN', 'ministere-sante-gn', 'Administration publique', 'Government', 'Onboarding', 'Guinee', 'GNF', 'Afrique Ouest', 5000, true),
+    ('Banque Atlantique Conakry', 'banque-atlantique-ckry', 'Banque', 'Enterprise Plus', 'Actif', 'Guinee', 'GNF', 'Afrique Ouest', 1500, true),
+    ('Industries Boke Services', 'industries-boke-services', 'Industrie', 'Business', 'Essai', 'Guinee', 'GNF', 'Afrique Ouest', 500, false);
 
   INSERT INTO departments (tenant_id, name, parent_name, manager_name)
   VALUES
@@ -65,7 +71,7 @@ BEGIN
       (ARRAY['Responsable paie','Technicien datacenter','Charge commercial','Agent controle acces','Assistant RH','Manager agence','Comptable paie','Analyste performance','Agent terrain','Superviseur shift'])[1 + (((gs - 1) * 3) % 10)] AS role,
       (ARRAY['Ressources humaines','IT & securite','Ventes entreprises','Surete','Finance','Operations','Formation','Direction Generale'])[1 + (((gs - 1) * 5) % 8)] AS department_name,
       (ARRAY['Siege Kaloum','Datacenter Kipe','Agence Ratoma','Hopital Donka','Antenne Kindia','Bureau Boke'])[1 + (((gs - 1) * 2) % 6)] AS site_name,
-      (ARRAY['Presente','Presente','Presente','Retard','Mission','Absent'])[1 + (((gs - 1) * 4) % 6)] AS status
+      (ARRAY['Presente','Presente','Presente','Retard','Mission','Absent'])[1 + (((gs - 1) * 5) % 6)] AS status
     FROM generate_series(1, 100) AS gs
   ) AS source
   JOIN departments ON departments.tenant_id = tenant_uuid AND departments.name = source.department_name

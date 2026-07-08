@@ -10,6 +10,7 @@ import 'features/employees/employees_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/performance/performance_screen.dart';
 import 'features/sites/sites_screen.dart';
+import 'features/tenants/tenants_screen.dart';
 
 class GeoTimeShell extends StatefulWidget {
   const GeoTimeShell({
@@ -46,6 +47,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       _Destination(strings.t('customers'), Icons.route_rounded),
       _Destination(strings.t('suppliers'), Icons.query_stats_rounded),
       _Destination(strings.t('ai'), Icons.psychology_rounded),
+      _Destination(strings.t('tenants'), Icons.apartment_rounded),
       _Destination(strings.t('settings'), Icons.settings_rounded),
     ];
     final pages = [
@@ -57,6 +59,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       const MissionsScreen(),
       const PerformanceScreen(),
       const AiScreen(),
+      const TenantsScreen(),
       SettingsScreen(
         themeMode: widget.themeMode,
         locale: widget.locale,
@@ -130,13 +133,14 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
           ),
         ],
       ),
-      bottomNavigationBar: wide
+      bottomNavigationBar: wide || _index > 4
           ? null
           : NavigationBar(
-              selectedIndex: _index > 4 ? 4 : _index,
+              selectedIndex: _index,
               onDestinationSelected: (value) => _selectPage(value),
               destinations: destinations.take(5).map((item) {
-                return NavigationDestination(icon: Icon(item.icon), label: item.label);
+                return NavigationDestination(
+                    icon: Icon(item.icon), label: item.label);
               }).toList(),
             ),
       floatingActionButton: wide || _index <= 4
@@ -296,7 +300,8 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       5 => 'Missions',
       6 => 'Performance',
       7 => 'IA RH',
-      8 => 'Reglages',
+      8 => 'Tenants',
+      9 => 'Reglages',
       _ => 'Inconnu',
     };
   }
@@ -314,7 +319,8 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
               ListTile(
                 leading: const Icon(Icons.security_rounded),
                 title: const Text('Pointage suspect'),
-                subtitle: const Text('Fake GPS detecte sur un appareil Android.'),
+                subtitle:
+                    const Text('Fake GPS detecte sur un appareil Android.'),
                 trailing: TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Verifier'),
@@ -323,7 +329,8 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
               ListTile(
                 leading: const Icon(Icons.schedule_rounded),
                 title: const Text('Retard recurrent'),
-                subtitle: const Text('5 retards sur 10 jours dans IT & securite.'),
+                subtitle:
+                    const Text('5 retards sur 10 jours dans IT & securite.'),
                 trailing: TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Traiter'),
@@ -401,6 +408,15 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
           icon: Icons.auto_awesome_rounded,
           fields: [
             _QuickActionField('Question RH', Icons.chat_rounded),
+          ],
+        ),
+      8 => const _QuickActionConfig(
+          title: 'Nouveau tenant',
+          icon: Icons.add_business_rounded,
+          fields: [
+            _QuickActionField('Nom organisation', Icons.apartment_rounded),
+            _QuickActionField('Domaine / slug', Icons.link_rounded),
+            _QuickActionField('Plan SaaS', Icons.workspace_premium_rounded),
           ],
         ),
       _ => _QuickActionConfig(
