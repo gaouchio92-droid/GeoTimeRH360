@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'core/localization/app_strings.dart';
 import 'data/demo_data.dart';
+import 'features/admin/admin_dashboard_screen.dart';
 import 'features/ai/ai_screen.dart';
 import 'features/missions/missions_screen.dart';
 import 'features/dashboard/dashboard_screen.dart';
@@ -43,10 +44,11 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
     final activeTenant = DemoData.tenantAccounts[_activeTenantIndex];
     final destinations = [
       _Destination(strings.t('dashboard'), Icons.dashboard_rounded),
+      _Destination(strings.t('admin'), Icons.admin_panel_settings_rounded),
       _Destination(strings.t('products'), Icons.badge_rounded),
       _Destination(strings.t('stock'), Icons.fingerprint_rounded),
-      _Destination(strings.t('warehouses'), Icons.business_rounded),
       _Destination(strings.t('pos'), Icons.payments_rounded),
+      _Destination(strings.t('warehouses'), Icons.business_rounded),
       _Destination(strings.t('customers'), Icons.route_rounded),
       _Destination(strings.t('suppliers'), Icons.query_stats_rounded),
       _Destination(strings.t('ai'), Icons.psychology_rounded),
@@ -55,10 +57,11 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
     ];
     final pages = [
       DashboardScreen(activeTenant: activeTenant),
+      AdminDashboardScreen(activeTenant: activeTenant),
       EmployeesScreen(activeTenant: activeTenant),
       const AttendanceScreen(),
-      const SitesScreen(),
       const PayrollScreen(),
+      const SitesScreen(),
       const MissionsScreen(),
       const PerformanceScreen(),
       const AiScreen(),
@@ -167,9 +170,10 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
     final strings = AppStrings.of(context);
     return switch (_index) {
       1 => strings.t('products'),
-      2 => 'Pointer',
-      3 => 'Site',
+      2 => strings.t('products'),
+      3 => 'Pointer',
       4 => 'Paie',
+      5 => 'Site',
       _ => 'Action',
     };
   }
@@ -313,15 +317,16 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
   String _pageName(int value) {
     return switch (value) {
       0 => 'Tableau',
-      1 => 'Employes',
-      2 => 'Pointage',
-      3 => 'Sites',
+      1 => 'Admin',
+      2 => 'Employes',
+      3 => 'Pointage',
       4 => 'Paie',
-      5 => 'Missions',
-      6 => 'Performance',
-      7 => 'IA RH',
-      8 => 'Tenants',
-      9 => 'Reglages',
+      5 => 'Sites',
+      6 => 'Missions',
+      7 => 'Performance',
+      8 => 'IA RH',
+      9 => 'Tenants',
+      10 => 'Reglages',
       _ => 'Inconnu',
     };
   }
@@ -367,6 +372,15 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
     final strings = AppStrings.of(context);
     return switch (_index) {
       1 => const _QuickActionConfig(
+          title: 'Action admin',
+          icon: Icons.admin_panel_settings_rounded,
+          fields: [
+            _QuickActionField('Operation', Icons.tune_rounded),
+            _QuickActionField('Tenant cible', Icons.apartment_rounded),
+            _QuickActionField('Motif audit', Icons.fact_check_rounded),
+          ],
+        ),
+      2 => const _QuickActionConfig(
           title: 'Nouvel employe',
           icon: Icons.person_add_rounded,
           fields: [
@@ -376,22 +390,13 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
                 keyboardType: TextInputType.number),
           ],
         ),
-      2 => const _QuickActionConfig(
+      3 => const _QuickActionConfig(
           title: 'Pointage manuel',
           icon: Icons.fingerprint_rounded,
           fields: [
             _QuickActionField('Employe', Icons.person_rounded),
             _QuickActionField('Mode GPS / QR / NFC', Icons.pin_drop_rounded),
             _QuickActionField('Motif', Icons.notes_rounded),
-          ],
-        ),
-      3 => const _QuickActionConfig(
-          title: 'Nouveau site',
-          icon: Icons.business_rounded,
-          fields: [
-            _QuickActionField('Nom du site', Icons.business_rounded),
-            _QuickActionField('Latitude / longitude', Icons.map_rounded),
-            _QuickActionField('Rayon geofence', Icons.radar_rounded),
           ],
         ),
       4 => const _QuickActionConfig(
@@ -405,6 +410,15 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
           ],
         ),
       5 => const _QuickActionConfig(
+          title: 'Nouveau site',
+          icon: Icons.business_rounded,
+          fields: [
+            _QuickActionField('Nom du site', Icons.business_rounded),
+            _QuickActionField('Latitude / longitude', Icons.map_rounded),
+            _QuickActionField('Rayon geofence', Icons.radar_rounded),
+          ],
+        ),
+      6 => const _QuickActionConfig(
           title: 'Nouvelle mission',
           icon: Icons.route_rounded,
           fields: [
@@ -414,7 +428,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
                 keyboardType: TextInputType.number),
           ],
         ),
-      6 => const _QuickActionConfig(
+      7 => const _QuickActionConfig(
           title: 'Objectif KPI',
           icon: Icons.flag_rounded,
           fields: [
@@ -423,14 +437,14 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
             _QuickActionField('Poids KPI', Icons.percent_rounded),
           ],
         ),
-      7 => const _QuickActionConfig(
+      8 => const _QuickActionConfig(
           title: 'Question IA',
           icon: Icons.auto_awesome_rounded,
           fields: [
             _QuickActionField('Question RH', Icons.chat_rounded),
           ],
         ),
-      8 => const _QuickActionConfig(
+      9 => const _QuickActionConfig(
           title: 'Nouveau tenant',
           icon: Icons.add_business_rounded,
           fields: [

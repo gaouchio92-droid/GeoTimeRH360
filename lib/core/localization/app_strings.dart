@@ -19,6 +19,7 @@ class AppStrings {
   static const _values = <String, Map<String, String>>{
     'fr': {
       'dashboard': 'Tableau',
+      'admin': 'Admin',
       'products': 'Employes RH',
       'stock': 'Pointage',
       'warehouses': 'Sites',
@@ -41,6 +42,7 @@ class AppStrings {
     },
     'en': {
       'dashboard': 'Dashboard',
+      'admin': 'Admin',
       'products': 'Employees',
       'stock': 'Attendance',
       'warehouses': 'Sites',
@@ -63,6 +65,7 @@ class AppStrings {
     },
     'ar': {
       'dashboard': 'Dashboard',
+      'admin': 'Admin',
       'products': 'Employees',
       'stock': 'Attendance',
       'warehouses': 'Sites',
@@ -85,6 +88,7 @@ class AppStrings {
     },
     'es': {
       'dashboard': 'Panel',
+      'admin': 'Admin',
       'products': 'Empleados',
       'stock': 'Marcaje',
       'warehouses': 'Sitios',

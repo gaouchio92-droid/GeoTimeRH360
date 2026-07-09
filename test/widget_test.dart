@@ -93,4 +93,28 @@ void main() {
     expect(find.text('Banque Atlantique Conakry'), findsWidgets);
     expect(find.text('Enterprise Plus'), findsWidgets);
   });
+
+  testWidgets('Admin dashboard opens from navigation', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Admin'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Dashboard Admin'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Sante plateforme'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Sante plateforme'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Securite admin'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Securite admin'), findsOneWidget);
+  });
 }
