@@ -5,22 +5,31 @@ import '../../data/demo_data.dart';
 import '../shared_widgets.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({super.key, required this.activeTenant});
+
+  final TenantAccount activeTenant;
 
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
     final scheme = Theme.of(context).colorScheme;
-    final employeeCount = DemoData.employees.length;
-    final presentCount = DemoData.employees
-        .where((employee) => employee.status == 'Presente')
-        .length;
-    final lateCount = DemoData.employees
-        .where((employee) => employee.status == 'Retard')
-        .length;
-    final absentCount = DemoData.employees
-        .where((employee) => employee.status == 'Absent')
-        .length;
+    final tenantEmployees = DemoData.employeesForTenant(activeTenant);
+    final employeeCount = activeTenant.employeeCount;
+    final presentCount = activeTenant.slug == 'geotime-demo-gn'
+        ? tenantEmployees
+            .where((employee) => employee.status == 'Presente')
+            .length
+        : (employeeCount * 0.82).round();
+    final lateCount = activeTenant.slug == 'geotime-demo-gn'
+        ? tenantEmployees
+            .where((employee) => employee.status == 'Retard')
+            .length
+        : (employeeCount * 0.06).round();
+    final absentCount = activeTenant.slug == 'geotime-demo-gn'
+        ? tenantEmployees
+            .where((employee) => employee.status == 'Absent')
+            .length
+        : (employeeCount * 0.035).round();
     final presentRate =
         employeeCount == 0 ? 0 : (presentCount / employeeCount * 100).round();
     return ListView(
@@ -64,6 +73,8 @@ class DashboardScreen extends StatelessWidget {
                     color: Colors.green)),
           ],
         ),
+        const SizedBox(height: 24),
+        _TenantContextPanel(activeTenant: activeTenant),
         const SizedBox(height: 24),
         _SaaSOverviewPanel(scheme: scheme),
         const SizedBox(height: 24),
@@ -204,6 +215,78 @@ class _WorkforcePlanningPanel extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _TenantContextPanel extends StatelessWidget {
+  const _TenantContextPanel({required this.activeTenant});
+
+  final TenantAccount activeTenant;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SizedBox(
+              width: _contextTitleWidth(context),
+              child: Row(
+                children: [
+                  CircleAvatar(child: Text(activeTenant.name.substring(0, 1))),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          activeTenant.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w900),
+                        ),
+                        Text('${activeTenant.slug} - ${activeTenant.sector}'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            StatusChip(label: activeTenant.plan, color: scheme.primary),
+            StatusChip(label: activeTenant.status, color: _statusColor()),
+            StatusChip(label: activeTenant.dataRegion, color: Colors.teal),
+            StatusChip(
+              label: activeTenant.ssoEnabled ? 'SSO actif' : 'SSO a configurer',
+              color: activeTenant.ssoEnabled ? Colors.green : Colors.orange,
+            ),
+            StatusChip(
+              label: 'Limite ${activeTenant.employeeLimit} employes',
+              color: Colors.indigo,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _statusColor() {
+    return switch (activeTenant.status) {
+      'Actif' => Colors.green,
+      'Onboarding' => Colors.orange,
+      _ => Colors.blue,
+    };
+  }
+
+  double _contextTitleWidth(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    if (width >= 900) return 360;
+    return width - 64;
   }
 }
 

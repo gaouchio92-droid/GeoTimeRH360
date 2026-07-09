@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/localization/app_strings.dart';
+import 'data/demo_data.dart';
 import 'features/ai/ai_screen.dart';
 import 'features/missions/missions_screen.dart';
 import 'features/dashboard/dashboard_screen.dart';
@@ -32,12 +33,14 @@ class GeoTimeShell extends StatefulWidget {
 
 class _GeoTimeShellState extends State<GeoTimeShell> {
   int _index = 0;
+  int _activeTenantIndex = 0;
   String _statusMessage = 'Plateforme prete';
   int _clickCount = 0;
 
   @override
   Widget build(BuildContext context) {
     final strings = AppStrings.of(context);
+    final activeTenant = DemoData.tenantAccounts[_activeTenantIndex];
     final destinations = [
       _Destination(strings.t('dashboard'), Icons.dashboard_rounded),
       _Destination(strings.t('products'), Icons.badge_rounded),
@@ -51,15 +54,18 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       _Destination(strings.t('settings'), Icons.settings_rounded),
     ];
     final pages = [
-      const DashboardScreen(),
-      const EmployeesScreen(),
+      DashboardScreen(activeTenant: activeTenant),
+      EmployeesScreen(activeTenant: activeTenant),
       const AttendanceScreen(),
       const SitesScreen(),
       const PayrollScreen(),
       const MissionsScreen(),
       const PerformanceScreen(),
       const AiScreen(),
-      const TenantsScreen(),
+      TenantsScreen(
+        activeTenant: activeTenant,
+        onTenantSelected: _selectTenant,
+      ),
       SettingsScreen(
         themeMode: widget.themeMode,
         locale: widget.locale,
@@ -73,6 +79,10 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       appBar: AppBar(
         title: const Text('GeoTime Enterprise HR Suite'),
         actions: [
+          _TenantSwitcher(
+            activeTenant: activeTenant,
+            onTenantSelected: _selectTenant,
+          ),
           IconButton(
             tooltip: strings.t('search'),
             onPressed: () => _showSearchPanel(context),
@@ -290,6 +300,16 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
     });
   }
 
+  void _selectTenant(TenantAccount tenant) {
+    final index = DemoData.tenantAccounts.indexOf(tenant);
+    if (index == -1) return;
+    setState(() {
+      _activeTenantIndex = index;
+      _clickCount++;
+      _statusMessage = 'Tenant actif: ${tenant.name}';
+    });
+  }
+
   String _pageName(int value) {
     return switch (value) {
       0 => 'Tableau',
@@ -427,6 +447,55 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
           ],
         ),
     };
+  }
+}
+
+class _TenantSwitcher extends StatelessWidget {
+  const _TenantSwitcher({
+    required this.activeTenant,
+    required this.onTenantSelected,
+  });
+
+  final TenantAccount activeTenant;
+  final ValueChanged<TenantAccount> onTenantSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final wide = MediaQuery.sizeOf(context).width >= 760;
+    return PopupMenuButton<TenantAccount>(
+      tooltip: 'Changer de tenant',
+      onSelected: onTenantSelected,
+      itemBuilder: (context) {
+        return [
+          for (final tenant in DemoData.tenantAccounts)
+            PopupMenuItem(
+              value: tenant,
+              child: Row(
+                children: [
+                  Icon(
+                    tenant == activeTenant
+                        ? Icons.check_circle_rounded
+                        : Icons.apartment_rounded,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(child: Text(tenant.name)),
+                  const SizedBox(width: 8),
+                  Text(tenant.plan),
+                ],
+              ),
+            ),
+        ];
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Chip(
+          avatar: const Icon(Icons.apartment_rounded, size: 18),
+          label: Text(wide ? activeTenant.name : activeTenant.slug),
+          visualDensity: VisualDensity.compact,
+        ),
+      ),
+    );
   }
 }
 

@@ -4,7 +4,14 @@ import '../../data/demo_data.dart';
 import '../shared_widgets.dart';
 
 class TenantsScreen extends StatelessWidget {
-  const TenantsScreen({super.key});
+  const TenantsScreen({
+    super.key,
+    required this.activeTenant,
+    required this.onTenantSelected,
+  });
+
+  final TenantAccount activeTenant;
+  final ValueChanged<TenantAccount> onTenantSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +88,11 @@ class TenantsScreen extends StatelessWidget {
         for (final tenant in DemoData.tenantAccounts)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: _TenantCard(tenant: tenant),
+            child: _TenantCard(
+              tenant: tenant,
+              active: tenant == activeTenant,
+              onSelected: () => onTenantSelected(tenant),
+            ),
           ),
       ],
     );
@@ -203,17 +214,18 @@ class _ControlTile extends StatelessWidget {
 }
 
 class _TenantCard extends StatelessWidget {
-  const _TenantCard({required this.tenant});
+  const _TenantCard({
+    required this.tenant,
+    required this.active,
+    required this.onSelected,
+  });
 
   final TenantAccount tenant;
+  final bool active;
+  final VoidCallback onSelected;
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = switch (tenant.status) {
-      'Actif' => Colors.green,
-      'Onboarding' => Colors.orange,
-      _ => Colors.blue,
-    };
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -237,7 +249,14 @@ class _TenantCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                StatusChip(label: tenant.status, color: statusColor),
+                active
+                    ? const StatusChip(
+                        label: 'Actif dans app', color: Colors.indigo)
+                    : TextButton.icon(
+                        onPressed: onSelected,
+                        icon: const Icon(Icons.login_rounded),
+                        label: const Text('Activer'),
+                      ),
               ],
             ),
             const SizedBox(height: 14),

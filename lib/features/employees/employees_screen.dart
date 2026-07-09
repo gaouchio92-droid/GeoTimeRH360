@@ -4,14 +4,32 @@ import '../../data/demo_data.dart';
 import '../shared_widgets.dart';
 
 class EmployeesScreen extends StatefulWidget {
-  const EmployeesScreen({super.key});
+  const EmployeesScreen({super.key, required this.activeTenant});
+
+  final TenantAccount activeTenant;
 
   @override
   State<EmployeesScreen> createState() => _EmployeesScreenState();
 }
 
 class _EmployeesScreenState extends State<EmployeesScreen> {
-  late final List<Employee> _employees = List<Employee>.from(DemoData.employees);
+  late List<Employee> _employees;
+
+  @override
+  void initState() {
+    super.initState();
+    _employees =
+        List<Employee>.from(DemoData.employeesForTenant(widget.activeTenant));
+  }
+
+  @override
+  void didUpdateWidget(covariant EmployeesScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.activeTenant != widget.activeTenant) {
+      _employees =
+          List<Employee>.from(DemoData.employeesForTenant(widget.activeTenant));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +47,13 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
         Card(
           child: ListTile(
             leading: const Icon(Icons.storage_rounded),
-            title: Text('${_employees.length} employes de simulation'),
-            subtitle: const Text('Base generee avec noms guineens, matricules, sites, statuts et salaires.'),
-            trailing: const StatusChip(label: 'Seed RH', color: Colors.teal),
+            title: Text(
+                '${widget.activeTenant.employeeCount} employes - ${widget.activeTenant.name}'),
+            subtitle: Text(
+              'Apercu ${_employees.length} dossiers, tenant ${widget.activeTenant.slug}, plan ${widget.activeTenant.plan}.',
+            ),
+            trailing: StatusChip(
+                label: widget.activeTenant.status, color: _tenantStatusColor()),
           ),
         ),
         const SizedBox(height: 16),
@@ -67,7 +89,8 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
             padding: const EdgeInsets.only(bottom: 12),
             child: Card(
               child: ListTile(
-                leading: CircleAvatar(child: Text(employee.name.substring(0, 1))),
+                leading:
+                    CircleAvatar(child: Text(employee.name.substring(0, 1))),
                 title: Text(employee.name),
                 subtitle: Text(
                   '${employee.employeeId} - ${employee.role} - ${employee.department}',
@@ -126,6 +149,14 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
       SnackBar(content: Text(message)),
     );
   }
+
+  Color _tenantStatusColor() {
+    return switch (widget.activeTenant.status) {
+      'Actif' => Colors.green,
+      'Onboarding' => Colors.orange,
+      _ => Colors.blue,
+    };
+  }
 }
 
 class _EmployeeForm extends StatefulWidget {
@@ -158,7 +189,8 @@ class _EmployeeFormState extends State<_EmployeeForm> {
     _site = TextEditingController(text: employee?.site ?? '');
     _phone = TextEditingController(text: employee?.phone ?? '');
     _email = TextEditingController(text: employee?.email ?? '');
-    _salary = TextEditingController(text: employee?.baseSalary.toStringAsFixed(0) ?? '');
+    _salary = TextEditingController(
+        text: employee?.baseSalary.toStringAsFixed(0) ?? '');
   }
 
   @override
@@ -204,7 +236,8 @@ class _EmployeeFormState extends State<_EmployeeForm> {
             _field(_site, 'Site', Icons.business_rounded),
             _field(_phone, 'Telephone', Icons.phone_rounded),
             _field(_email, 'Email', Icons.email_rounded),
-            _field(_salary, 'Salaire de base', Icons.payments_rounded, number: true),
+            _field(_salary, 'Salaire de base', Icons.payments_rounded,
+                number: true),
             const SizedBox(height: 8),
             FilledButton.icon(
               onPressed: _save,
@@ -251,7 +284,9 @@ class _EmployeeFormState extends State<_EmployeeForm> {
         name: _name.text.trim(),
         employeeId: _employeeId.text.trim(),
         role: _role.text.trim().isEmpty ? 'Non defini' : _role.text.trim(),
-        department: _department.text.trim().isEmpty ? 'General' : _department.text.trim(),
+        department: _department.text.trim().isEmpty
+            ? 'General'
+            : _department.text.trim(),
         site: _site.text.trim().isEmpty ? 'Siege' : _site.text.trim(),
         phone: _phone.text.trim(),
         email: _email.text.trim(),

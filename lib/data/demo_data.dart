@@ -197,6 +197,7 @@ class TenantAccount {
     required this.status,
     required this.dataRegion,
     required this.employeeCount,
+    required this.employeeLimit,
     required this.userCount,
     required this.siteCount,
     required this.monthlyRevenue,
@@ -215,6 +216,7 @@ class TenantAccount {
   final String status;
   final String dataRegion;
   final int employeeCount;
+  final int employeeLimit;
   final int userCount;
   final int siteCount;
   final double monthlyRevenue;
@@ -310,6 +312,7 @@ class DemoData {
       status: 'Actif',
       dataRegion: 'Afrique Ouest',
       employeeCount: 100,
+      employeeLimit: 1000,
       userCount: 18,
       siteCount: 6,
       monthlyRevenue: 14500000,
@@ -328,6 +331,7 @@ class DemoData {
       status: 'Onboarding',
       dataRegion: 'Afrique Ouest',
       employeeCount: 1240,
+      employeeLimit: 5000,
       userCount: 64,
       siteCount: 38,
       monthlyRevenue: 42000000,
@@ -346,6 +350,7 @@ class DemoData {
       status: 'Actif',
       dataRegion: 'Afrique Ouest',
       employeeCount: 620,
+      employeeLimit: 1500,
       userCount: 42,
       siteCount: 22,
       monthlyRevenue: 36500000,
@@ -364,6 +369,7 @@ class DemoData {
       status: 'Essai',
       dataRegion: 'Afrique Ouest',
       employeeCount: 280,
+      employeeLimit: 500,
       userCount: 12,
       siteCount: 9,
       monthlyRevenue: 9800000,
@@ -417,6 +423,37 @@ class DemoData {
   static double get monthlyRecurringRevenue {
     return tenantAccounts.fold(
         0, (total, tenant) => total + tenant.monthlyRevenue);
+  }
+
+  static List<Employee> employeesForTenant(TenantAccount tenant) {
+    if (tenant.slug == 'geotime-demo-gn') return employees;
+
+    final limit = tenant.employeeCount > 120 ? 120 : tenant.employeeCount;
+    final seed = tenant.slug.length;
+    return List<Employee>.generate(limit, (index) {
+      final base = employees[(index + seed) % employees.length];
+      final tenantPrefix = tenant.slug
+          .split('-')
+          .where((part) => part.isNotEmpty)
+          .map((part) => part.substring(0, 1).toUpperCase())
+          .take(3)
+          .join();
+      final matricule = (index + 1).toString().padLeft(4, '0');
+      final emailName = base.name.toLowerCase().replaceAll(' ', '.');
+      return Employee(
+        name: base.name,
+        employeeId: '$tenantPrefix-EMP-$matricule',
+        role: base.role,
+        department: base.department,
+        site: base.site,
+        phone: base.phone,
+        email: '$emailName.$matricule@${tenant.slug}.gn',
+        status: base.status,
+        lateMinutes: base.lateMinutes,
+        overtimeHours: base.overtimeHours,
+        baseSalary: base.baseSalary,
+      );
+    });
   }
 
   static const sites = [

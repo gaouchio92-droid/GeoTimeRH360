@@ -50,7 +50,8 @@ void main() {
     expect(find.text('Valide: GPS reel dans le geofence'), findsWidgets);
   });
 
-  testWidgets('Payroll module displays cycle and validates payroll', (tester) async {
+  testWidgets('Payroll module displays cycle and validates payroll',
+      (tester) async {
     await tester.pumpWidget(const GeoTimeApp());
     await tester.pumpAndSettle();
 
@@ -76,5 +77,20 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Cycle paie valide'), findsOneWidget);
+  });
+
+  testWidgets('Tenant switcher updates dashboard context', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    expect(find.text('GeoTime Demo Guinee'), findsWidgets);
+
+    await tester.tap(find.byTooltip('Changer de tenant'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Banque Atlantique Conakry').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Banque Atlantique Conakry'), findsWidgets);
+    expect(find.text('Enterprise Plus'), findsWidgets);
   });
 }
