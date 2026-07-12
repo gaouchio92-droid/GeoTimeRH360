@@ -118,10 +118,43 @@ void main() {
     expect(find.text('Securite admin'), findsOneWidget);
   });
 
+  testWidgets('Security center opens from navigation', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Securite'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Security Center'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Controles securite'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Controles securite'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Threat model RH'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Threat model RH'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Ownership map'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Ownership map'), findsOneWidget);
+  });
+
   testWidgets('HR suite benchmark page opens from navigation', (tester) async {
     await tester.pumpWidget(const GeoTimeApp());
     await tester.pumpAndSettle();
 
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Suite RH'));
     await tester.pumpAndSettle();
 

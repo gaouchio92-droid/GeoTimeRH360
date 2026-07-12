@@ -20,6 +20,7 @@ class AppStrings {
     'fr': {
       'dashboard': 'Tableau',
       'admin': 'Admin',
+      'security': 'Securite',
       'suite': 'Suite RH',
       'products': 'Employes RH',
       'recruiting': 'Recrutement',
@@ -45,6 +46,7 @@ class AppStrings {
     'en': {
       'dashboard': 'Dashboard',
       'admin': 'Admin',
+      'security': 'Security',
       'suite': 'HR Suite',
       'products': 'Employees',
       'recruiting': 'Recruiting',
@@ -70,6 +72,7 @@ class AppStrings {
     'ar': {
       'dashboard': 'Dashboard',
       'admin': 'Admin',
+      'security': 'Security',
       'suite': 'HR Suite',
       'products': 'Employees',
       'recruiting': 'Recruiting',
@@ -95,6 +98,7 @@ class AppStrings {
     'es': {
       'dashboard': 'Panel',
       'admin': 'Admin',
+      'security': 'Seguridad',
       'suite': 'Suite RRHH',
       'products': 'Empleados',
       'recruiting': 'Reclutamiento',

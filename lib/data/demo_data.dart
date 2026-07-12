@@ -356,6 +356,74 @@ class InterviewSlot {
   final Color color;
 }
 
+class SecurityControl {
+  const SecurityControl({
+    required this.title,
+    required this.scope,
+    required this.status,
+    required this.coverage,
+    required this.owner,
+    required this.color,
+  });
+
+  final String title;
+  final String scope;
+  final String status;
+  final double coverage;
+  final String owner;
+  final Color color;
+}
+
+class SecurityRisk {
+  const SecurityRisk({
+    required this.title,
+    required this.impact,
+    required this.likelihood,
+    required this.mitigation,
+    required this.severity,
+    required this.color,
+  });
+
+  final String title;
+  final String impact;
+  final String likelihood;
+  final String mitigation;
+  final String severity;
+  final Color color;
+}
+
+class SecurityOwner {
+  const SecurityOwner({
+    required this.domain,
+    required this.owner,
+    required this.responsibility,
+    required this.backup,
+    required this.color,
+  });
+
+  final String domain;
+  final String owner;
+  final String responsibility;
+  final String backup;
+  final Color color;
+}
+
+class SecurityEvent {
+  const SecurityEvent({
+    required this.title,
+    required this.actor,
+    required this.when,
+    required this.decision,
+    required this.color,
+  });
+
+  final String title;
+  final String actor;
+  final String when;
+  final String decision;
+  final Color color;
+}
+
 class FraudSignal {
   const FraudSignal({
     required this.label,
@@ -744,6 +812,138 @@ class DemoData {
       mode: 'Presentiel',
       status: 'Documents requis',
       color: Colors.indigo,
+    ),
+  ];
+
+  static const securityControls = [
+    SecurityControl(
+      title: 'MFA obligatoire',
+      scope: 'Admins, RH, Finance',
+      status: 'Actif',
+      coverage: 0.96,
+      owner: 'Security Officer',
+      color: Colors.green,
+    ),
+    SecurityControl(
+      title: 'RBAC par tenant',
+      scope: 'Modules RH, paie, ATS',
+      status: 'Actif',
+      coverage: 0.91,
+      owner: 'Platform Admin',
+      color: Colors.indigo,
+    ),
+    SecurityControl(
+      title: 'RLS PostgreSQL',
+      scope: 'employees, payroll, attendance',
+      status: 'A renforcer',
+      coverage: 0.74,
+      owner: 'Backend Lead',
+      color: Colors.orange,
+    ),
+    SecurityControl(
+      title: 'Audit logs SIEM',
+      scope: 'Exports, login, paie, documents',
+      status: 'Connecte',
+      coverage: 0.88,
+      owner: 'SOC Client',
+      color: Colors.blue,
+    ),
+  ];
+
+  static const securityRisks = [
+    SecurityRisk(
+      title: 'Export paie non autorise',
+      impact: 'Fuite donnees salariales',
+      likelihood: 'Moyenne',
+      mitigation: 'RBAC finance + approbation RH + journal SIEM',
+      severity: 'Critique',
+      color: Colors.red,
+    ),
+    SecurityRisk(
+      title: 'Pointage appareil compromis',
+      impact: 'Fraude presence',
+      likelihood: 'Elevee',
+      mitigation: 'Root/Jailbreak, liveness, device trust, geofence',
+      severity: 'Haut',
+      color: Colors.orange,
+    ),
+    SecurityRisk(
+      title: 'Erreur isolation tenant',
+      impact: 'Acces croise client',
+      likelihood: 'Faible',
+      mitigation: 'tenant_id obligatoire, RLS, tests contractuels API',
+      severity: 'Critique',
+      color: Colors.red,
+    ),
+    SecurityRisk(
+      title: 'Secret integration expire',
+      impact: 'Rupture sync ERP',
+      likelihood: 'Moyenne',
+      mitigation: 'Rotation secrets et alertes 15 jours avant expiration',
+      severity: 'Moyen',
+      color: Colors.indigo,
+    ),
+  ];
+
+  static const securityOwners = [
+    SecurityOwner(
+      domain: 'Identite et acces',
+      owner: 'Admin Plateforme',
+      responsibility: 'MFA, SSO, RBAC, sessions',
+      backup: 'Responsable RH',
+      color: Colors.indigo,
+    ),
+    SecurityOwner(
+      domain: 'Donnees RH sensibles',
+      owner: 'DPO / Juridique',
+      responsibility: 'RGPD, consentement, retention documents',
+      backup: 'DRH',
+      color: Colors.green,
+    ),
+    SecurityOwner(
+      domain: 'Infrastructure',
+      owner: 'DevOps Lead',
+      responsibility: 'PostgreSQL, Docker, sauvegardes, TLS',
+      backup: 'Backend Lead',
+      color: Colors.orange,
+    ),
+    SecurityOwner(
+      domain: 'Detection incidents',
+      owner: 'SOC Client',
+      responsibility: 'SIEM, alertes, investigation, evidences',
+      backup: 'Security Officer',
+      color: Colors.blue,
+    ),
+  ];
+
+  static const securityEvents = [
+    SecurityEvent(
+      title: 'Connexion admin MFA validee',
+      actor: 'admin@geotime.gn',
+      when: 'Il y a 8 min',
+      decision: 'Autorise',
+      color: Colors.green,
+    ),
+    SecurityEvent(
+      title: 'Export bulletins bloque',
+      actor: 'manager.agence@client.gn',
+      when: 'Il y a 22 min',
+      decision: 'Refuse RBAC',
+      color: Colors.red,
+    ),
+    SecurityEvent(
+      title: 'Rotation cle API Odoo',
+      actor: 'system',
+      when: '02:10',
+      decision: 'Termine',
+      color: Colors.indigo,
+    ),
+    SecurityEvent(
+      title: 'Pointage fake GPS signale',
+      actor: 'GT-EMP-0002',
+      when: '08:58',
+      decision: 'A verifier',
+      color: Colors.orange,
     ),
   ];
 
