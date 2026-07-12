@@ -142,4 +142,32 @@ void main() {
     );
     expect(find.text('ATS haut volume'), findsWidgets);
   });
+
+  testWidgets('Recruiting ATS module opens from navigation', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Recrutement'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Recrutement ATS'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Pipeline Greenhouse-style'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Pipeline Greenhouse-style'), findsOneWidget);
+
+    expect(find.text('Shortlist IA'), findsWidgets);
+
+    await tester.scrollUntilVisible(
+      find.text('Conversion embauche vers RH Core'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Conversion embauche vers RH Core'), findsOneWidget);
+  });
 }

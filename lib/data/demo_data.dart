@@ -294,6 +294,68 @@ class OnboardingTask {
   final Color color;
 }
 
+class JobRequisition {
+  const JobRequisition({
+    required this.title,
+    required this.department,
+    required this.location,
+    required this.openings,
+    required this.candidates,
+    required this.status,
+    required this.priority,
+    required this.color,
+  });
+
+  final String title;
+  final String department;
+  final String location;
+  final int openings;
+  final int candidates;
+  final String status;
+  final String priority;
+  final Color color;
+}
+
+class CandidateProfile {
+  const CandidateProfile({
+    required this.name,
+    required this.role,
+    required this.source,
+    required this.stage,
+    required this.aiScore,
+    required this.experience,
+    required this.nextStep,
+    required this.color,
+  });
+
+  final String name;
+  final String role;
+  final String source;
+  final String stage;
+  final int aiScore;
+  final String experience;
+  final String nextStep;
+  final Color color;
+}
+
+class InterviewSlot {
+  const InterviewSlot({
+    required this.candidate,
+    required this.panel,
+    required this.time,
+    required this.mode,
+    required this.status,
+    required this.color,
+  });
+
+  final String candidate;
+  final String panel;
+  final String time;
+  final String mode;
+  final String status;
+  final Color color;
+}
+
 class FraudSignal {
   const FraudSignal({
     required this.label,
@@ -570,6 +632,119 @@ class DemoData {
         progress: 0.48,
         status: 'Planifie',
         color: Colors.blue),
+  ];
+
+  static const jobRequisitions = [
+    JobRequisition(
+      title: 'Responsable Paie Multi-pays',
+      department: 'Finance RH',
+      location: 'Conakry / hybride',
+      openings: 2,
+      candidates: 86,
+      status: 'Shortlist IA',
+      priority: 'Critique',
+      color: Colors.red,
+    ),
+    JobRequisition(
+      title: 'Agent Controle Acces',
+      department: 'Surete',
+      location: 'Sites miniers Boke',
+      openings: 12,
+      candidates: 144,
+      status: 'Entretiens',
+      priority: 'Haute',
+      color: Colors.orange,
+    ),
+    JobRequisition(
+      title: 'Developpeur Integrations RH',
+      department: 'IT & securite',
+      location: 'Conakry',
+      openings: 3,
+      candidates: 58,
+      status: 'Tests techniques',
+      priority: 'Normale',
+      color: Colors.indigo,
+    ),
+    JobRequisition(
+      title: 'Formateur Pointage Mobile',
+      department: 'Formation',
+      location: 'Regions',
+      openings: 5,
+      candidates: 54,
+      status: 'Offres',
+      priority: 'Normale',
+      color: Colors.green,
+    ),
+  ];
+
+  static const candidateProfiles = [
+    CandidateProfile(
+      name: 'Naby Camara',
+      role: 'Responsable Paie Multi-pays',
+      source: 'LinkedIn',
+      stage: 'Shortlist IA',
+      aiScore: 94,
+      experience: '8 ans paie banque',
+      nextStep: 'Entretien RH',
+      color: Colors.green,
+    ),
+    CandidateProfile(
+      name: 'Mariam Diallo',
+      role: 'Developpeur Integrations RH',
+      source: 'Cooptation',
+      stage: 'Test technique',
+      aiScore: 91,
+      experience: 'NestJS, PostgreSQL, API ERP',
+      nextStep: 'Panel technique',
+      color: Colors.indigo,
+    ),
+    CandidateProfile(
+      name: 'Oumar Bah',
+      role: 'Agent Controle Acces',
+      source: 'Campagne SMS',
+      stage: 'Entretien manager',
+      aiScore: 86,
+      experience: 'Surete industrielle',
+      nextStep: 'Verification documents',
+      color: Colors.orange,
+    ),
+    CandidateProfile(
+      name: 'Kadiatou Sow',
+      role: 'Formateur Pointage Mobile',
+      source: 'Site carriere',
+      stage: 'Offre',
+      aiScore: 89,
+      experience: 'Formation terrain multi-sites',
+      nextStep: 'Signature contrat',
+      color: Colors.blue,
+    ),
+  ];
+
+  static const interviewSlots = [
+    InterviewSlot(
+      candidate: 'Naby Camara',
+      panel: 'RH + Finance',
+      time: 'Aujourd hui 14:00',
+      mode: 'Visio',
+      status: 'Confirme',
+      color: Colors.green,
+    ),
+    InterviewSlot(
+      candidate: 'Mariam Diallo',
+      panel: 'CTO + Integration Lead',
+      time: 'Demain 10:30',
+      mode: 'Technique',
+      status: 'A preparer',
+      color: Colors.orange,
+    ),
+    InterviewSlot(
+      candidate: 'Oumar Bah',
+      panel: 'Manager Surete',
+      time: 'Jeudi 09:00',
+      mode: 'Presentiel',
+      status: 'Documents requis',
+      color: Colors.indigo,
+    ),
   ];
 
   static int get activeTenantCount {

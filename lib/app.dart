@@ -9,6 +9,7 @@ import 'features/dashboard/dashboard_screen.dart';
 import 'features/attendance/attendance_screen.dart';
 import 'features/payroll/payroll_screen.dart';
 import 'features/employees/employees_screen.dart';
+import 'features/recruiting/recruiting_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/performance/performance_screen.dart';
 import 'features/sites/sites_screen.dart';
@@ -49,6 +50,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       _Destination(strings.t('suite'), Icons.auto_awesome_motion_rounded),
       _Destination(strings.t('products'), Icons.badge_rounded),
       _Destination(strings.t('stock'), Icons.fingerprint_rounded),
+      _Destination(strings.t('recruiting'), Icons.work_rounded),
       _Destination(strings.t('pos'), Icons.payments_rounded),
       _Destination(strings.t('warehouses'), Icons.business_rounded),
       _Destination(strings.t('customers'), Icons.route_rounded),
@@ -63,6 +65,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       HrSuiteScreen(activeTenant: activeTenant),
       EmployeesScreen(activeTenant: activeTenant),
       const AttendanceScreen(),
+      RecruitingScreen(activeTenant: activeTenant),
       const PayrollScreen(),
       const SitesScreen(),
       const MissionsScreen(),
@@ -176,8 +179,9 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       2 => 'Suite RH',
       3 => strings.t('products'),
       4 => 'Pointer',
-      5 => 'Paie',
-      6 => 'Site',
+      5 => 'Recruter',
+      6 => 'Paie',
+      7 => 'Site',
       _ => 'Action',
     };
   }
@@ -325,13 +329,14 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
       2 => 'Suite RH 360',
       3 => 'Employes',
       4 => 'Pointage',
-      5 => 'Paie',
-      6 => 'Sites',
-      7 => 'Missions',
-      8 => 'Performance',
-      9 => 'IA RH',
-      10 => 'Tenants',
-      11 => 'Reglages',
+      5 => 'Recrutement',
+      6 => 'Paie',
+      7 => 'Sites',
+      8 => 'Missions',
+      9 => 'Performance',
+      10 => 'IA RH',
+      11 => 'Tenants',
+      12 => 'Reglages',
       _ => 'Inconnu',
     };
   }
@@ -415,6 +420,16 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
           ],
         ),
       5 => const _QuickActionConfig(
+          title: 'Nouvelle offre',
+          icon: Icons.work_rounded,
+          fields: [
+            _QuickActionField('Intitule poste', Icons.work_rounded),
+            _QuickActionField('Departement', Icons.account_tree_rounded),
+            _QuickActionField('Nombre de postes', Icons.numbers_rounded,
+                keyboardType: TextInputType.number),
+          ],
+        ),
+      6 => const _QuickActionConfig(
           title: 'Validation paie',
           icon: Icons.payments_rounded,
           fields: [
@@ -424,7 +439,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
                 keyboardType: TextInputType.number),
           ],
         ),
-      6 => const _QuickActionConfig(
+      7 => const _QuickActionConfig(
           title: 'Nouveau site',
           icon: Icons.business_rounded,
           fields: [
@@ -433,7 +448,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
             _QuickActionField('Rayon geofence', Icons.radar_rounded),
           ],
         ),
-      7 => const _QuickActionConfig(
+      8 => const _QuickActionConfig(
           title: 'Nouvelle mission',
           icon: Icons.route_rounded,
           fields: [
@@ -443,7 +458,7 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
                 keyboardType: TextInputType.number),
           ],
         ),
-      8 => const _QuickActionConfig(
+      9 => const _QuickActionConfig(
           title: 'Objectif KPI',
           icon: Icons.flag_rounded,
           fields: [
@@ -452,14 +467,14 @@ class _GeoTimeShellState extends State<GeoTimeShell> {
             _QuickActionField('Poids KPI', Icons.percent_rounded),
           ],
         ),
-      9 => const _QuickActionConfig(
+      10 => const _QuickActionConfig(
           title: 'Question IA',
           icon: Icons.auto_awesome_rounded,
           fields: [
             _QuickActionField('Question RH', Icons.chat_rounded),
           ],
         ),
-      10 => const _QuickActionConfig(
+      11 => const _QuickActionConfig(
           title: 'Nouveau tenant',
           icon: Icons.add_business_rounded,
           fields: [
