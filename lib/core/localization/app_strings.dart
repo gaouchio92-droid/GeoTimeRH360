@@ -20,6 +20,7 @@ class AppStrings {
     'fr': {
       'dashboard': 'Tableau',
       'admin': 'Admin',
+      'suite': 'Suite RH',
       'products': 'Employes RH',
       'stock': 'Pointage',
       'warehouses': 'Sites',
@@ -43,6 +44,7 @@ class AppStrings {
     'en': {
       'dashboard': 'Dashboard',
       'admin': 'Admin',
+      'suite': 'HR Suite',
       'products': 'Employees',
       'stock': 'Attendance',
       'warehouses': 'Sites',
@@ -66,6 +68,7 @@ class AppStrings {
     'ar': {
       'dashboard': 'Dashboard',
       'admin': 'Admin',
+      'suite': 'HR Suite',
       'products': 'Employees',
       'stock': 'Attendance',
       'warehouses': 'Sites',
@@ -89,6 +92,7 @@ class AppStrings {
     'es': {
       'dashboard': 'Panel',
       'admin': 'Admin',
+      'suite': 'Suite RRHH',
       'products': 'Empleados',
       'stock': 'Marcaje',
       'warehouses': 'Sitios',

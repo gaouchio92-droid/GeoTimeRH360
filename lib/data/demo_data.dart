@@ -242,6 +242,58 @@ class SaaSControl {
   final Color color;
 }
 
+class StrategicCapability {
+  const StrategicCapability({
+    required this.platformReference,
+    required this.title,
+    required this.positioning,
+    required this.geoTimeFeature,
+    required this.kpi,
+    required this.status,
+    required this.icon,
+    required this.color,
+  });
+
+  final String platformReference;
+  final String title;
+  final String positioning;
+  final String geoTimeFeature;
+  final String kpi;
+  final String status;
+  final IconData icon;
+  final Color color;
+}
+
+class RecruitingPipelineStage {
+  const RecruitingPipelineStage({
+    required this.stage,
+    required this.count,
+    required this.conversionRate,
+    required this.color,
+  });
+
+  final String stage;
+  final int count;
+  final double conversionRate;
+  final Color color;
+}
+
+class OnboardingTask {
+  const OnboardingTask({
+    required this.title,
+    required this.owner,
+    required this.progress,
+    required this.status,
+    required this.color,
+  });
+
+  final String title;
+  final String owner;
+  final double progress;
+  final String status;
+  final Color color;
+}
+
 class FraudSignal {
   const FraudSignal({
     required this.label,
@@ -409,6 +461,115 @@ class DemoData {
       icon: Icons.public_rounded,
       color: Colors.teal,
     ),
+  ];
+
+  static const strategicCapabilities = [
+    StrategicCapability(
+      platformReference: 'UKG',
+      title: 'Workforce analytics IA',
+      positioning:
+          'Insights predictifs, risques depart, productivite, recommandations.',
+      geoTimeFeature:
+          'Score IA presence + rotation + couverture shifts par tenant.',
+      kpi: '17 risques detectes',
+      status: 'Priorite produit',
+      icon: Icons.auto_graph_rounded,
+      color: Colors.indigo,
+    ),
+    StrategicCapability(
+      platformReference: 'Deel HR',
+      title: 'SIRH, paie et conformite',
+      positioning: 'Paie multi-pays, obligations locales, dossiers RH unifies.',
+      geoTimeFeature:
+          'Regles paie GNF/XOF/USD, alertes conformite et audit exportable.',
+      kpi: '4 pays prets',
+      status: 'En extension',
+      icon: Icons.gavel_rounded,
+      color: Colors.green,
+    ),
+    StrategicCapability(
+      platformReference: 'Paylocity',
+      title: 'Experience employe et integrations',
+      positioning: 'Hub employe, workflows, integrations HR/Finance/IT.',
+      geoTimeFeature:
+          'Portail mobile RH, notifications, connecteurs Teams, Slack, Odoo.',
+      kpi: '12 integrations',
+      status: 'Connecteurs',
+      icon: Icons.hub_rounded,
+      color: Colors.teal,
+    ),
+    StrategicCapability(
+      platformReference: 'Paycom',
+      title: 'Self-onboarding employe',
+      positioning: 'Nouveaux employes autonomes avant le premier jour.',
+      geoTimeFeature:
+          'Checklist documents, signature, profil, badge, formation initiale.',
+      kpi: '83% complete',
+      status: 'Prototype',
+      icon: Icons.fact_check_rounded,
+      color: Colors.orange,
+    ),
+    StrategicCapability(
+      platformReference: 'Greenhouse',
+      title: 'ATS recrutement haut volume',
+      positioning:
+          'Pipeline structure, scorecards, IA recruiting, integrations.',
+      geoTimeFeature:
+          'CV parsing, classement IA, entretiens, embauche vers dossier RH.',
+      kpi: '342 candidats',
+      status: 'Module ATS',
+      icon: Icons.work_rounded,
+      color: Colors.blue,
+    ),
+  ];
+
+  static const recruitingPipeline = [
+    RecruitingPipelineStage(
+        stage: 'Candidats', count: 342, conversionRate: 1, color: Colors.blue),
+    RecruitingPipelineStage(
+        stage: 'Shortlist IA',
+        count: 126,
+        conversionRate: 0.37,
+        color: Colors.indigo),
+    RecruitingPipelineStage(
+        stage: 'Entretiens',
+        count: 58,
+        conversionRate: 0.17,
+        color: Colors.orange),
+    RecruitingPipelineStage(
+        stage: 'Offres', count: 19, conversionRate: 0.06, color: Colors.teal),
+    RecruitingPipelineStage(
+        stage: 'Embauches',
+        count: 11,
+        conversionRate: 0.03,
+        color: Colors.green),
+  ];
+
+  static const onboardingTasks = [
+    OnboardingTask(
+        title: 'Documents identite',
+        owner: 'Employe',
+        progress: 0.92,
+        status: 'Presque fini',
+        color: Colors.green),
+    OnboardingTask(
+        title: 'Signature contrat',
+        owner: 'RH',
+        progress: 0.76,
+        status: 'En cours',
+        color: Colors.indigo),
+    OnboardingTask(
+        title: 'Configuration badge',
+        owner: 'Surete',
+        progress: 0.64,
+        status: 'A verifier',
+        color: Colors.orange),
+    OnboardingTask(
+        title: 'Formation initiale',
+        owner: 'Manager',
+        progress: 0.48,
+        status: 'Planifie',
+        color: Colors.blue),
   ];
 
   static int get activeTenantCount {

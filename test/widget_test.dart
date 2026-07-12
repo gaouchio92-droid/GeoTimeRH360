@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geotime_enterprise_hr_suite/main.dart';
 
@@ -55,11 +55,21 @@ void main() {
     await tester.pumpWidget(const GeoTimeApp());
     await tester.pumpAndSettle();
 
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Paie'));
     await tester.pumpAndSettle();
 
     expect(find.text('Paie integree'), findsOneWidget);
     expect(find.text('Juillet 2026'), findsOneWidget);
+
+    await tester.tap(find.text('Valider le cycle'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Cycle paie valide'), findsOneWidget);
+
+    await tester.tap(find.text('Fermer'));
+    await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
       find.text('Anomalies paie IA'),
@@ -67,16 +77,6 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('Anomalies paie IA'), findsOneWidget);
-
-    await tester.scrollUntilVisible(
-      find.text('Valider le cycle'),
-      -500,
-      scrollable: find.byType(Scrollable).first,
-    );
-    await tester.tap(find.text('Valider le cycle'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Cycle paie valide'), findsOneWidget);
   });
 
   testWidgets('Tenant switcher updates dashboard context', (tester) async {
@@ -116,5 +116,30 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.text('Securite admin'), findsOneWidget);
+  });
+
+  testWidgets('HR suite benchmark page opens from navigation', (tester) async {
+    await tester.pumpWidget(const GeoTimeApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Suite RH'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Suite RH 360'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Capacites inspirees des leaders RH'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Capacites inspirees des leaders RH'), findsOneWidget);
+    expect(find.textContaining('UKG'), findsWidgets);
+
+    await tester.scrollUntilVisible(
+      find.text('ATS haut volume'),
+      500,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('ATS haut volume'), findsWidgets);
   });
 }
